@@ -66,8 +66,6 @@ import org.oppia.android.domain.platformparameter.PlatformParameterSingletonModu
 import org.oppia.android.domain.question.QuestionModule
 import org.oppia.android.domain.topic.PrimeTopicAssetsControllerModule
 import org.oppia.android.domain.workmanager.WorkManagerConfigurationModule
-import org.oppia.android.testing.DisableAccessibilityChecks
-import org.oppia.android.testing.OppiaTestRule
 import org.oppia.android.testing.TestLogReportingModule
 import org.oppia.android.testing.espresso.EditTextInputAction
 import org.oppia.android.testing.junit.InitializeDefaultLocaleRule
@@ -106,9 +104,6 @@ class InputInteractionViewTestActivityTest {
   @Inject
   lateinit var testCoroutineDispatchers: TestCoroutineDispatchers
 
-  @get:Rule
-  val oppiaTestRule = OppiaTestRule()
-
   @Inject
   lateinit var editTextInputAction: EditTextInputAction
 
@@ -142,7 +137,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withNegativeNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -161,7 +155,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withWholeNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -180,7 +173,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withFraction_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -204,7 +196,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withNegativeFraction_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -228,7 +219,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withMixedNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -253,7 +243,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withNegativeMixedNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -297,7 +286,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withNegativeSignOtherThanAt0_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -317,7 +305,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withNegativeSignAt0MoreThan1_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -337,7 +324,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withDividerMoreThanOnce_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -357,7 +343,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withDividerAtStart_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -377,7 +362,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withPartialMixedNumber_numberFormatErrorIsNotDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -390,7 +374,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withPartialMixedNumberSubmit_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -412,7 +395,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withMixedNumber_submit_noErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -427,7 +409,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withDivideByZero_errorIsNotDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -440,7 +421,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withDivideByZero_submit_divideByZeroErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -462,7 +442,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withInvalidCharacter_invalidCharacterErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_fraction_input_interaction_view))
@@ -483,7 +462,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testFractionInput_withLong_submit_numberTooLongErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_fraction_input_interaction_view))
@@ -518,7 +496,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withRealNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -540,7 +517,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withRealNumberWithDecimal_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -561,7 +537,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withNegativeRealNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -598,7 +573,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withInvalidCharacter_invalidCharacterErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -619,7 +593,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withLongNumber_submit_numberTooLongErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -642,7 +615,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withLongInteger_submit_numberTooLongErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -665,7 +637,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withMinusSymbol_submit_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -688,7 +659,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withNegativeSymbolNotAt0_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -704,7 +674,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withNegativeSignAt0MoreThan1_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -724,7 +693,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withFloatingPointMoreThanOnce_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -744,7 +712,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testNumericInput_withDecimalAtStart_numberStartingWithFloatingPointError() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -772,7 +739,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testTextInput_withChar_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -910,7 +876,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testRatioInput_withZeroRatio_submit_numberWithZerosErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -934,7 +899,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testRatioInput_withInvalidRatio_submit_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -960,7 +924,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testRatioInput_withRatioHaving4Terms_submit_invalidSizeErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -985,7 +948,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testRatioInput_withRatioHaving2Terms_submit_invalidSizeErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -1010,7 +972,6 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
   fun testRatioInput_withRatioHaving3Terms_submit_noErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
