@@ -91,6 +91,10 @@ class DragAndDropSortInteractionViewModel(
     adapter.notifyItemMoved(indexFrom, indexTo)
   }
 
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
+
   override fun onDragEnded(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
     // Update the data list if once drag is complete and merge icons are displayed.
     if (allowMultipleItemsInSamePosition) {

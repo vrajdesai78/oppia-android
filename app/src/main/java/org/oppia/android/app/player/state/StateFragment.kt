@@ -2,6 +2,7 @@ package org.oppia.android.app.player.state
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,9 @@ import org.oppia.android.app.player.state.listener.ShowHintAvailabilityListener
 import org.oppia.android.app.player.state.listener.SubmitNavigationButtonListener
 import org.oppia.android.util.extensions.getStringFromBundle
 import javax.inject.Inject
+import org.oppia.android.R
+import org.oppia.android.app.customview.interaction.FractionInputInteractionView
+import org.oppia.android.domain.state.RetriveUserAnswer
 
 /** Fragment that represents the current state of an exploration. */
 class StateFragment :
@@ -120,6 +124,16 @@ class StateFragment :
     stateFragmentPresenter.updateSubmitButton(pendingAnswerError, inputAnswerAvailable)
   }
 
+  override fun onResume() {
+    super.onResume()
+    stateFragmentPresenter.handleOnResume()
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    stateFragmentPresenter.handleDestroyView()
+  }
+
   fun setAudioBarVisibility(visibility: Boolean) =
     stateFragmentPresenter.setAudioBarVisibility(visibility)
 
@@ -134,4 +148,7 @@ class StateFragment :
   fun dismissConceptCard() = stateFragmentPresenter.dismissConceptCard()
 
   fun getExplorationCheckpointState() = stateFragmentPresenter.getExplorationCheckpointState()
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
 }

@@ -81,6 +81,10 @@ class ImageRegionSelectionInteractionViewModel(
       this@ImageRegionSelectionInteractionViewModel.writtenTranslationContext
   }.build()
 
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
+
   private fun parseClickOnImage(answerTextString: String): ClickOnImage {
     val region = selectableRegions.find { it.label == answerTextString }
     return ClickOnImage.newBuilder()

@@ -86,4 +86,8 @@ class NumericInputViewModel(
       this.writtenTranslationContext = this@NumericInputViewModel.writtenTranslationContext
     }
   }.build()
+
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
 }

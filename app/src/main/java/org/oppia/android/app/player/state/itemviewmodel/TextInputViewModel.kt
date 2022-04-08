@@ -68,6 +68,10 @@ class TextInputViewModel(
     }
   }.build()
 
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
+
   private fun deriveHintText(interaction: Interaction): CharSequence {
     // The subtitled unicode can apparently exist in the structure in two different formats.
     val placeholderUnicodeOption1 =

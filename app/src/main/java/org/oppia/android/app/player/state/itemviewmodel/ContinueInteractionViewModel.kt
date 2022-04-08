@@ -41,4 +41,8 @@ class ContinueInteractionViewModel(
   fun handleButtonClicked() {
     interactionAnswerReceiver.onAnswerReadyForSubmission(getPendingAnswer())
   }
+
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
 }

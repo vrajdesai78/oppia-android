@@ -103,6 +103,10 @@ class SelectionInteractionViewModel(
     writtenTranslationContext = translationContext
   }.build()
 
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
+
   /** Returns an HTML list containing all of the HTML string elements as items in the list. */
   private fun convertSelectedItemsToHtmlString(itemHtmls: Collection<String>): String {
     return when (itemHtmls.size) {

@@ -65,6 +65,10 @@ class RatioExpressionInputInteractionViewModel(
     }
   }.build()
 
+  override fun setPendingAnswer(userAnswer: UserAnswer) {
+    TODO("Not yet implemented")
+  }
+
   /** It checks the pending error for the current ratio input, and correspondingly updates the error string based on the specified error category. */
   override fun checkPendingAnswerError(category: AnswerErrorCategory): String? {
     if (answerText.isNotEmpty()) {
