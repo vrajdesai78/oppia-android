@@ -15,6 +15,8 @@ import org.oppia.android.app.player.state.answerhandling.InteractionAnswerHandle
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerReceiver
 import org.oppia.android.app.viewmodel.ObservableArrayList
 import org.oppia.android.domain.translation.TranslationController
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /** Corresponds to the type of input that should be used for an item selection interaction view. */
 enum class SelectionItemInputType {
@@ -31,6 +33,8 @@ class SelectionInteractionViewModel(
   private val interactionAnswerErrorOrAvailabilityCheckReceiver: InteractionAnswerErrorOrAvailabilityCheckReceiver, // ktlint-disable max-line-length
   val isSplitView: Boolean,
   val writtenTranslationContext: WrittenTranslationContext,
+  @EnableConfigurationChange
+  private val enableConfigurationChange: PlatformParameterValue<Boolean>,
   private val translationController: TranslationController
 ) : StateItemViewModel(ViewType.SELECTION_INTERACTION), InteractionAnswerHandler {
   private val interactionId: String = interaction.id

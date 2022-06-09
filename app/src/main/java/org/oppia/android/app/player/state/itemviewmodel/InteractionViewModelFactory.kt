@@ -4,6 +4,7 @@ import org.oppia.android.app.model.Interaction
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerErrorOrAvailabilityCheckReceiver
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerReceiver
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /**
  * Returns a new [StateItemViewModel] corresponding to this interaction with the GCS entity ID, the [Interaction]
@@ -18,5 +19,6 @@ typealias InteractionViewModelFactory = (
   interactionAnswerErrorOrAvailabilityCheckReceiver: InteractionAnswerErrorOrAvailabilityCheckReceiver, // ktlint-disable max-line-length
   hasPreviousButton: Boolean,
   isSplitView: Boolean,
+  isConfigurationChangeEnabled: PlatformParameterValue<Boolean>,
   writtenTranslationContext: WrittenTranslationContext
 ) -> StateItemViewModel

@@ -16,6 +16,8 @@ import org.oppia.android.app.player.state.answerhandling.InteractionAnswerErrorO
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerHandler
 import org.oppia.android.app.translation.AppLanguageResourceHandler
 import org.oppia.android.domain.translation.TranslationController
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /** [StateItemViewModel] for the fraction input interaction. */
 class FractionInteractionViewModel(
@@ -25,6 +27,8 @@ class FractionInteractionViewModel(
   private val errorOrAvailabilityCheckReceiver: InteractionAnswerErrorOrAvailabilityCheckReceiver,
   private val writtenTranslationContext: WrittenTranslationContext,
   private val resourceHandler: AppLanguageResourceHandler,
+  @EnableConfigurationChange
+  private val enableConfigurationChange: PlatformParameterValue<Boolean>,
   private val translationController: TranslationController
 ) : StateItemViewModel(ViewType.FRACTION_INPUT_INTERACTION), InteractionAnswerHandler {
   private var pendingAnswerError: String? = null
@@ -61,7 +65,10 @@ class FractionInteractionViewModel(
   }.build()
 
   override fun setPendingAnswer(userAnswer: UserAnswer) {
-    answerText = userAnswer.plainAnswer
+    if(enableConfigurationChange.value) {
+      answerText = userAnswer.plainAnswer
+      Log.d("testSingleton", answerText.toString())
+    }
   }
 
   /** It checks the pending error for the current fraction input, and correspondingly updates the error string based on the specified error category. */

@@ -16,6 +16,8 @@ import org.oppia.android.app.utility.DefaultRegionClickedEvent
 import org.oppia.android.app.utility.NamedRegionClickedEvent
 import org.oppia.android.app.utility.OnClickableAreaClickedListener
 import org.oppia.android.app.utility.RegionClickedEvent
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /** [StateItemViewModel] for image region selection. */
 class ImageRegionSelectionInteractionViewModel(
@@ -25,6 +27,8 @@ class ImageRegionSelectionInteractionViewModel(
   private val errorOrAvailabilityCheckReceiver: InteractionAnswerErrorOrAvailabilityCheckReceiver,
   val isSplitView: Boolean,
   private val writtenTranslationContext: WrittenTranslationContext,
+  @EnableConfigurationChange
+  private val enableConfigurationChange: PlatformParameterValue<Boolean>,
   private val resourceHandler: AppLanguageResourceHandler
 ) : StateItemViewModel(ViewType.IMAGE_REGION_SELECTION_INTERACTION),
   InteractionAnswerHandler,

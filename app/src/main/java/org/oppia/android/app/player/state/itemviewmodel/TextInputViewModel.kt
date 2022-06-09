@@ -11,6 +11,8 @@ import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerErrorOrAvailabilityCheckReceiver
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerHandler
 import org.oppia.android.domain.translation.TranslationController
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /** [StateItemViewModel] for the text input interaction. */
 class TextInputViewModel(
@@ -19,6 +21,8 @@ class TextInputViewModel(
   private val interactionAnswerErrorOrAvailabilityCheckReceiver: InteractionAnswerErrorOrAvailabilityCheckReceiver, // ktlint-disable max-line-length
   val isSplitView: Boolean,
   private val writtenTranslationContext: WrittenTranslationContext,
+  @EnableConfigurationChange
+  private val enableConfigurationChange: PlatformParameterValue<Boolean>,
   private val translationController: TranslationController
 ) : StateItemViewModel(ViewType.TEXT_INPUT_INTERACTION), InteractionAnswerHandler {
   var answerText: CharSequence = ""

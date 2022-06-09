@@ -17,6 +17,8 @@ import org.oppia.android.app.translation.AppLanguageResourceHandler
 import org.oppia.android.app.utility.toAccessibleAnswerString
 import org.oppia.android.domain.translation.TranslationController
 import org.oppia.android.domain.util.toAnswerString
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /** [StateItemViewModel] for the ratio expression input interaction. */
 class RatioExpressionInputInteractionViewModel(
@@ -26,6 +28,8 @@ class RatioExpressionInputInteractionViewModel(
   private val errorOrAvailabilityCheckReceiver: InteractionAnswerErrorOrAvailabilityCheckReceiver,
   private val writtenTranslationContext: WrittenTranslationContext,
   private val resourceHandler: AppLanguageResourceHandler,
+  @EnableConfigurationChange
+  private val enableConfigurationChange: PlatformParameterValue<Boolean>,
   private val translationController: TranslationController
 ) : StateItemViewModel(ViewType.RATIO_EXPRESSION_INPUT_INTERACTION), InteractionAnswerHandler {
   private var pendingAnswerError: String? = null

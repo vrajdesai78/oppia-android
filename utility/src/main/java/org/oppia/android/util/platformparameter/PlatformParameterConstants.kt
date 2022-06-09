@@ -80,3 +80,10 @@ const val LEARNER_STUDY_ANALYTICS = "learner_study_analytics"
  * and working of learner study related analytics logging.
  */
 const val LEARNER_STUDY_ANALYTICS_DEFAULT_VALUE = false
+
+/** Qualifier for the feature flag to enable configuration change using singleton class **/
+@Qualifier
+annotation class EnableConfigurationChange
+
+/** Default value for feature flag corresponding to [EnableConfigurationChange] **/
+const val ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE = false
