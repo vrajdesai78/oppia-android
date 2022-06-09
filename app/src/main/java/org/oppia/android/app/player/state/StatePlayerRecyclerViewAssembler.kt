@@ -92,6 +92,8 @@ import org.oppia.android.util.accessibility.AccessibilityService
 import org.oppia.android.util.parser.html.HtmlParser
 import org.oppia.android.util.threading.BackgroundDispatcher
 import javax.inject.Inject
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 private typealias AudioUiManagerRetriever = () -> AudioUiManager?
 
@@ -196,7 +198,9 @@ class StatePlayerRecyclerViewAssembler private constructor(
   fun compute(
     ephemeralState: EphemeralState,
     gcsEntityId: String,
-    isSplitView: Boolean
+    isSplitView: Boolean,
+    @EnableConfigurationChange
+    isConfigurationChangeEnabled: PlatformParameterValue<Boolean>
   ): Pair<List<StateItemViewModel>, List<StateItemViewModel>> {
     this.isSplitView.set(isSplitView)
 
@@ -222,6 +226,7 @@ class StatePlayerRecyclerViewAssembler private constructor(
         ephemeralState.pendingState.wrongAnswerList,
         /* isCorrectAnswer= */ false,
         gcsEntityId,
+
         ephemeralState.writtenTranslationContext
       )
       if (playerFeatureSet.interactionSupport) {
@@ -232,7 +237,8 @@ class StatePlayerRecyclerViewAssembler private constructor(
           interaction,
           hasPreviousState,
           gcsEntityId,
-          ephemeralState.writtenTranslationContext
+          ephemeralState.writtenTranslationContext,
+          isConfigurationChangeEnabled
         )
       }
     } else if (ephemeralState.stateTypeCase == StateTypeCase.COMPLETED_STATE) {
@@ -307,7 +313,9 @@ class StatePlayerRecyclerViewAssembler private constructor(
     interaction: Interaction,
     hasPreviousButton: Boolean,
     gcsEntityId: String,
-    writtenTranslationContext: WrittenTranslationContext
+    writtenTranslationContext: WrittenTranslationContext,
+    @EnableConfigurationChange
+    isConfigurationChangeEnabled: PlatformParameterValue<Boolean>
   ) {
     val interactionViewModelFactory = interactionViewModelFactoryMap.getValue(interaction.id)
     pendingItemList += interactionViewModelFactory(
@@ -318,6 +326,7 @@ class StatePlayerRecyclerViewAssembler private constructor(
       fragment as InteractionAnswerErrorOrAvailabilityCheckReceiver,
       hasPreviousButton,
       isSplitView.get()!!,
+      isConfigurationChangeEnabled,
       writtenTranslationContext
     )
   }

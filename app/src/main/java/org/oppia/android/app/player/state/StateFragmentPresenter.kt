@@ -1,6 +1,7 @@
 package org.oppia.android.app.player.state
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,8 @@ import org.oppia.android.util.parser.html.ExplorationHtmlParserEntityType
 import org.oppia.android.util.system.OppiaClock
 import javax.inject.Inject
 import org.oppia.android.domain.state.RetriveUserAnswer
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 const val STATE_FRAGMENT_PROFILE_ID_ARGUMENT_KEY =
   "StateFragmentPresenter.state_fragment_profile_id"
@@ -64,6 +67,8 @@ class StateFragmentPresenter @Inject constructor(
   private val viewModelProvider: ViewModelProvider<StateViewModel>,
   private val explorationProgressController: ExplorationProgressController,
   private val storyProgressController: StoryProgressController,
+  @EnableConfigurationChange
+  private val isConfigurationChange: PlatformParameterValue<Boolean>,
   private val oppiaLogger: OppiaLogger,
   @DefaultResourceBucketName private val resourceBucketName: String,
   private val assemblerBuilderFactory: StatePlayerRecyclerViewAssembler.Builder.Factory,
@@ -317,7 +322,8 @@ class StateFragmentPresenter @Inject constructor(
     val dataPair = recyclerViewAssembler.compute(
       ephemeralState,
       explorationId,
-      shouldSplit
+      shouldSplit,
+      isConfigurationChange
     )
 
     viewModel.itemList.clear()
@@ -492,15 +498,20 @@ class StateFragmentPresenter @Inject constructor(
   }
 
   fun handleOnResume() {
-    RetriveUserAnswer.getUserAnswer()?.let {
-      viewModel.setPendingAnswer(it, recyclerViewAssembler::getPendingAnswerHandler)
+    if(!isConfigurationChange.value) {
+      RetriveUserAnswer.getUserAnswer()?.let {
+        viewModel.setPendingAnswer(it, recyclerViewAssembler::getPendingAnswerHandler)
+        Log.d("testSingleton", it.plainAnswer)
+      }
     }
   }
 
   fun handleDestroyView() {
-    RetriveUserAnswer.setUserAnswer(
-      viewModel.getPendingAnswer(recyclerViewAssembler::getPendingAnswerHandler)
-    )
+    if(!isConfigurationChange.value) {
+      RetriveUserAnswer.setUserAnswer(
+        viewModel.getPendingAnswer(recyclerViewAssembler::getPendingAnswerHandler)
+      )
+    }
   }
 
 }

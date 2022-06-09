@@ -37,6 +37,8 @@ import org.oppia.android.util.data.DataProviders.Companion.toLiveData
 import org.oppia.android.util.gcsresource.QuestionResourceBucketName
 import org.oppia.android.util.system.OppiaClock
 import javax.inject.Inject
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /** The presenter for [QuestionPlayerFragment]. */
 @FragmentScope
@@ -48,6 +50,8 @@ class QuestionPlayerFragmentPresenter @Inject constructor(
   private val questionAssessmentProgressController: QuestionAssessmentProgressController,
   private val oppiaClock: OppiaClock,
   private val oppiaLogger: OppiaLogger,
+  @EnableConfigurationChange
+  private val isConfigurationChange: PlatformParameterValue<Boolean>,
   @QuestionResourceBucketName private val resourceBucketName: String,
   private val assemblerBuilderFactory: StatePlayerRecyclerViewAssembler.Builder.Factory,
   private val splitScreenManager: SplitScreenManager
@@ -227,7 +231,8 @@ class QuestionPlayerFragmentPresenter @Inject constructor(
     val dataPair = recyclerViewAssembler.compute(
       ephemeralQuestion.ephemeralState,
       skillId,
-      isSplitView
+      isSplitView,
+      isConfigurationChange
     )
 
     questionViewModel.itemList.clear()

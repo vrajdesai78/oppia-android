@@ -23,6 +23,9 @@ import org.oppia.android.app.translation.AppLanguageResourceHandler
 import org.oppia.android.databinding.ActivityInputInteractionViewTestBinding
 import org.oppia.android.domain.translation.TranslationController
 import javax.inject.Inject
+import org.oppia.android.util.platformparameter.ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
+import org.oppia.android.util.platformparameter.EnableConfigurationChange
+import org.oppia.android.util.platformparameter.PlatformParameterValue
 
 /**
  * This is a dummy activity to test input interaction views.
@@ -48,7 +51,9 @@ class InputInteractionViewTestActivity :
       interactionAnswerErrorOrAvailabilityCheckReceiver = this,
       isSplitView = false,
       writtenTranslationContext = WrittenTranslationContext.getDefaultInstance(),
-      resourceHandler = resourceHandler
+      resourceHandler = resourceHandler,
+      enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
     )
   }
 
@@ -59,7 +64,9 @@ class InputInteractionViewTestActivity :
       interactionAnswerErrorOrAvailabilityCheckReceiver = this,
       isSplitView = false,
       writtenTranslationContext = WrittenTranslationContext.getDefaultInstance(),
-      translationController = translationController
+      translationController = translationController,
+      enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
     )
   }
 
@@ -76,7 +83,9 @@ class InputInteractionViewTestActivity :
       errorOrAvailabilityCheckReceiver = this,
       writtenTranslationContext = WrittenTranslationContext.getDefaultInstance(),
       resourceHandler = resourceHandler,
-      translationController = translationController
+      translationController = translationController,
+      enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
     )
 
     ratioExpressionInputInteractionViewModel = RatioExpressionInputInteractionViewModel(
@@ -89,7 +98,9 @@ class InputInteractionViewTestActivity :
       errorOrAvailabilityCheckReceiver = this,
       writtenTranslationContext = WrittenTranslationContext.getDefaultInstance(),
       resourceHandler = resourceHandler,
-      translationController = translationController
+      translationController = translationController,
+      enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
     )
     binding.numericInputViewModel = numericInputViewModel
     binding.textInputViewModel = textInputViewModel
