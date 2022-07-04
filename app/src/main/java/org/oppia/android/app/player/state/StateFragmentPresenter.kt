@@ -497,21 +497,13 @@ class StateFragmentPresenter @Inject constructor(
     }
   }
 
-  fun handleOnResume() {
-    if(!isConfigurationChange.value) {
-      RetriveUserAnswer.getUserAnswer()?.let {
-        viewModel.setPendingAnswer(it, recyclerViewAssembler::getPendingAnswerHandler)
-        Log.d("testSingleton", it.plainAnswer)
-      }
-    }
+  fun handleOnSavedInstance(): UserAnswer {
+    return viewModel.getPendingAnswer(recyclerViewAssembler::getPendingAnswerHandler)
   }
 
-  fun handleDestroyView() {
-    if(!isConfigurationChange.value) {
-      RetriveUserAnswer.setUserAnswer(
-        viewModel.getPendingAnswer(recyclerViewAssembler::getPendingAnswerHandler)
-      )
-    }
+  fun handleOnViewRestored(userAnswer: UserAnswer) {
+    viewModel.setPendingAnswer(userAnswer, recyclerViewAssembler::getPendingAnswerHandler)
+    Log.d("testAnswer", userAnswer.plainAnswer)
   }
 
 }

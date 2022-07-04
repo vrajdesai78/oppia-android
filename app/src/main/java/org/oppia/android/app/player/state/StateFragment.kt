@@ -25,6 +25,8 @@ import javax.inject.Inject
 import org.oppia.android.R
 import org.oppia.android.app.customview.interaction.FractionInputInteractionView
 import org.oppia.android.domain.state.RetriveUserAnswer
+import org.oppia.android.util.extensions.getProto
+import org.oppia.android.util.extensions.putProto
 
 /** Fragment that represents the current state of an exploration. */
 class StateFragment :
@@ -124,14 +126,18 @@ class StateFragment :
     stateFragmentPresenter.updateSubmitButton(pendingAnswerError, inputAnswerAvailable)
   }
 
-  override fun onResume() {
-    super.onResume()
-    stateFragmentPresenter.handleOnResume()
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    Log.d("testAnswer", stateFragmentPresenter.handleOnSavedInstance().toString())
+    outState.putProto("Answer", stateFragmentPresenter.handleOnSavedInstance())
   }
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    stateFragmentPresenter.handleDestroyView()
+  override fun onViewStateRestored(savedInstanceState: Bundle?) {
+    super.onViewStateRestored(savedInstanceState)
+    if(savedInstanceState!=null) {
+      val userAnswer = savedInstanceState.getProto("Answer", UserAnswer.getDefaultInstance())
+      stateFragmentPresenter.handleOnViewRestored(userAnswer)
+    }
   }
 
   fun setAudioBarVisibility(visibility: Boolean) =
