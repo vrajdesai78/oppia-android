@@ -65,10 +65,7 @@ class FractionInteractionViewModel(
   }.build()
 
   override fun setPendingAnswer(userAnswer: UserAnswer) {
-    if(enableConfigurationChange.value) {
-      answerText = userAnswer.plainAnswer
-      Log.d("testSingleton", answerText.toString())
-    }
+      Log.d("testAnswer", userAnswer.toString())
   }
 
   /** It checks the pending error for the current fraction input, and correspondingly updates the error string based on the specified error category. */

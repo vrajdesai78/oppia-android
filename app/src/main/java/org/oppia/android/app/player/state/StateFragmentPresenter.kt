@@ -503,7 +503,6 @@ class StateFragmentPresenter @Inject constructor(
 
   fun handleOnViewRestored(userAnswer: UserAnswer) {
     viewModel.setPendingAnswer(userAnswer, recyclerViewAssembler::getPendingAnswerHandler)
-    Log.d("testAnswer", userAnswer.plainAnswer)
   }
 
 }

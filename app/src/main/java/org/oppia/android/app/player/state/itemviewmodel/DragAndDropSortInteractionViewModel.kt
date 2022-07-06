@@ -1,5 +1,6 @@
 package org.oppia.android.app.player.state.itemviewmodel
 
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.recyclerview.widget.RecyclerView
@@ -96,7 +97,7 @@ class DragAndDropSortInteractionViewModel(
   }
 
   override fun setPendingAnswer(userAnswer: UserAnswer) {
-    TODO("Not yet implemented")
+    Log.d("testAnswer", userAnswer.toString())
   }
 
   override fun onDragEnded(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {

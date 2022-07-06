@@ -1,5 +1,6 @@
 package org.oppia.android.app.player.state.itemviewmodel
 
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableList
@@ -108,7 +109,7 @@ class SelectionInteractionViewModel(
   }.build()
 
   override fun setPendingAnswer(userAnswer: UserAnswer) {
-    TODO("Not yet implemented")
+    Log.d("testAnswer", userAnswer.toString())
   }
 
   /** Returns an HTML list containing all of the HTML string elements as items in the list. */

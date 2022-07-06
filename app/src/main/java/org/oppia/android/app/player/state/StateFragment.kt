@@ -128,7 +128,6 @@ class StateFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    Log.d("testAnswer", stateFragmentPresenter.handleOnSavedInstance().toString())
     outState.putProto("Answer", stateFragmentPresenter.handleOnSavedInstance())
   }
 

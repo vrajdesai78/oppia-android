@@ -2,6 +2,7 @@ package org.oppia.android.app.player.state.itemviewmodel
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import org.oppia.android.R
@@ -70,7 +71,7 @@ class RatioExpressionInputInteractionViewModel(
   }.build()
 
   override fun setPendingAnswer(userAnswer: UserAnswer) {
-    TODO("Not yet implemented")
+    Log.d("testAnswer", userAnswer.toString())
   }
 
   /** It checks the pending error for the current ratio input, and correspondingly updates the error string based on the specified error category. */
