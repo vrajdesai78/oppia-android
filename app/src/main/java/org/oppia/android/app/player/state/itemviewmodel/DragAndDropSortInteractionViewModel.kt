@@ -8,6 +8,7 @@ import org.oppia.android.app.model.Interaction
 import org.oppia.android.app.model.InteractionObject
 import org.oppia.android.app.model.ListOfSetsOfHtmlStrings
 import org.oppia.android.app.model.ListOfSetsOfTranslatableHtmlContentIds
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.SetOfTranslatableHtmlContentIds
 import org.oppia.android.app.model.StringList
 import org.oppia.android.app.model.SubtitledHtml
@@ -96,8 +97,8 @@ class DragAndDropSortInteractionViewModel(
     adapter.notifyItemMoved(indexFrom, indexTo)
   }
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
-    Log.d("testAnswer", userAnswer.toString())
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
+    Log.d("testAnswer", pendingUserAnswer.toString())
   }
 
   override fun onDragEnded(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
@@ -123,6 +124,20 @@ class DragAndDropSortInteractionViewModel(
   }
 
   override fun getPendingAnswer(): UserAnswer = UserAnswer.newBuilder().apply {
+    val selectedLists = _choiceItems.map { it.htmlContent }
+    val userStringLists = _choiceItems.map { it.computeStringList() }
+    listOfHtmlAnswers = convertItemsToAnswer(userStringLists)
+    answer = InteractionObject.newBuilder().apply {
+      listOfSetsOfTranslatableHtmlContentIds =
+        ListOfSetsOfTranslatableHtmlContentIds.newBuilder().apply {
+          addAllContentIdLists(selectedLists)
+        }.build()
+    }.build()
+    this.writtenTranslationContext =
+      this@DragAndDropSortInteractionViewModel.writtenTranslationContext
+  }.build()
+
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
     val selectedLists = _choiceItems.map { it.htmlContent }
     val userStringLists = _choiceItems.map { it.computeStringList() }
     listOfHtmlAnswers = convertItemsToAnswer(userStringLists)

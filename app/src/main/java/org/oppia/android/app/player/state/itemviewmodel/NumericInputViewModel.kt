@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.parser.StringToNumberParser
@@ -92,7 +93,24 @@ class NumericInputViewModel(
     }
   }.build()
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
-    Log.d("testAnswer", userAnswer.toString())
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
+    if (answerText.isNotEmpty()) {
+      val answerTextString = answerText.toString()
+      if(pendingAnswerError!=null) {
+        this.errorMessage = pendingAnswerError
+      }
+      else {
+        answer = InteractionObject.newBuilder().apply {
+          real = answerTextString.toDouble()
+        }.build()
+      }
+      plainAnswer = answerTextString
+      this.errorState = !pendingAnswerError.isNullOrEmpty()
+      this.writtenTranslationContext = this@NumericInputViewModel.writtenTranslationContext
+    }
+  }.build()
+
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
+    Log.d("testAnswer", pendingUserAnswer.toString())
   }
 }

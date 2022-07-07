@@ -45,6 +45,7 @@ import org.oppia.android.util.gcsresource.DefaultResourceBucketName
 import org.oppia.android.util.parser.html.ExplorationHtmlParserEntityType
 import org.oppia.android.util.system.OppiaClock
 import javax.inject.Inject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.domain.state.RetriveUserAnswer
 import org.oppia.android.util.platformparameter.EnableConfigurationChange
 import org.oppia.android.util.platformparameter.PlatformParameterValue
@@ -105,6 +106,7 @@ class StateFragmentPresenter @Inject constructor(
     internalProfileId: Int,
     topicId: String,
     storyId: String,
+    pendingUserAnswer: PendingUserAnswer?,
     explorationId: String
   ): View? {
     profileId = ProfileId.newBuilder().setInternalId(internalProfileId).build()
@@ -158,6 +160,9 @@ class StateFragmentPresenter @Inject constructor(
       )
     }
 
+    if(pendingUserAnswer!=null) {
+      viewModel.setPendingAnswer(pendingUserAnswer, recyclerViewAssembler::getPendingAnswerHandler)
+    }
     subscribeToCurrentState()
     return binding.root
   }
@@ -497,12 +502,8 @@ class StateFragmentPresenter @Inject constructor(
     }
   }
 
-  fun handleOnSavedInstance(): UserAnswer {
-    return viewModel.getPendingAnswer(recyclerViewAssembler::getPendingAnswerHandler)
-  }
-
-  fun handleOnViewRestored(userAnswer: UserAnswer) {
-    viewModel.setPendingAnswer(userAnswer, recyclerViewAssembler::getPendingAnswerHandler)
+  fun handleOnSavedInstance(): PendingUserAnswer {
+    return viewModel.getPendingUserAnswer(recyclerViewAssembler::getPendingAnswerHandler)
   }
 
 }

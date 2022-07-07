@@ -1,5 +1,6 @@
 package org.oppia.android.app.player.state.itemviewmodel
 
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import org.oppia.android.R
@@ -7,6 +8,7 @@ import org.oppia.android.app.model.ClickOnImage
 import org.oppia.android.app.model.ImageWithRegions
 import org.oppia.android.app.model.Interaction
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerErrorOrAvailabilityCheckReceiver
@@ -85,8 +87,21 @@ class ImageRegionSelectionInteractionViewModel(
       this@ImageRegionSelectionInteractionViewModel.writtenTranslationContext
   }.build()
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
-    TODO("Not yet implemented")
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
+    val answerTextString = answerText.toString()
+    answer = InteractionObject.newBuilder().apply {
+      clickOnImage = parseClickOnImage(answerTextString)
+    }.build()
+    plainAnswer = resourceHandler.getStringInLocaleWithWrapping(
+      R.string.image_interaction_answer_text,
+      answerTextString
+    )
+    this.writtenTranslationContext =
+      this@ImageRegionSelectionInteractionViewModel.writtenTranslationContext
+  }.build()
+
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
+    Log.d("testAnswer", pendingUserAnswer.toString())
   }
 
   private fun parseClickOnImage(answerTextString: String): ClickOnImage {

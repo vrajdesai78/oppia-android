@@ -8,6 +8,7 @@ import androidx.databinding.ObservableField
 import org.oppia.android.R
 import org.oppia.android.app.model.Interaction
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.parser.StringToFractionParser
@@ -64,8 +65,8 @@ class FractionInteractionViewModel(
     }
   }.build()
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
-      Log.d("testAnswer", userAnswer.toString())
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
+      Log.d("testAnswer", pendingUserAnswer.toString())
   }
 
   /** It checks the pending error for the current fraction input, and correspondingly updates the error string based on the specified error category. */
@@ -85,6 +86,22 @@ class FractionInteractionViewModel(
     }
     return pendingAnswerError
   }
+
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
+    if (answerText.isNotEmpty()) {
+      val answerTextString = answerText.toString()
+      plainAnswer = answerTextString
+      if(pendingAnswerError!=null) {
+        errorMessage = pendingAnswerError
+      } else {
+          answer = InteractionObject.newBuilder().apply {
+          fraction = stringToFractionParser.parseFractionFromString(answerTextString)
+          }.build()
+      }
+      this.errorState = !pendingAnswerError.isNullOrBlank()
+      this.writtenTranslationContext = this@FractionInteractionViewModel.writtenTranslationContext
+    }
+  }.build()
 
   fun getAnswerTextWatcher(): TextWatcher {
     return object : TextWatcher {

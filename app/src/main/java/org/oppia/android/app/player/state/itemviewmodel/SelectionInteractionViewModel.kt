@@ -6,6 +6,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableList
 import org.oppia.android.app.model.Interaction
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.SetOfTranslatableHtmlContentIds
 import org.oppia.android.app.model.SubtitledHtml
 import org.oppia.android.app.model.TranslatableHtmlContentId
@@ -108,8 +109,36 @@ class SelectionInteractionViewModel(
     writtenTranslationContext = translationContext
   }.build()
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
-    Log.d("testAnswer", userAnswer.toString())
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
+    val translationContext = this@SelectionInteractionViewModel.writtenTranslationContext
+    val selectedItemSubtitledHtmls = selectedItems.map(choiceItems::get).map { it.htmlContent }
+    val itemHtmls = selectedItemSubtitledHtmls.map { subtitledHtml ->
+      translationController.extractString(subtitledHtml, translationContext)
+    }
+    if (interactionId == "ItemSelectionInput") {
+      answer = InteractionObject.newBuilder().apply {
+        setOfTranslatableHtmlContentIds = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+          addAllContentIds(
+            selectedItemSubtitledHtmls.map { subtitledHtml ->
+              TranslatableHtmlContentId.newBuilder().apply {
+                contentId = subtitledHtml.contentId
+              }.build()
+            }
+          )
+        }.build()
+      }.build()
+      htmlAnswer = convertSelectedItemsToHtmlString(itemHtmls)
+    } else if (selectedItems.size == 1) {
+      answer = InteractionObject.newBuilder().apply {
+        nonNegativeInt = selectedItems.first()
+      }.build()
+      htmlAnswer = convertSelectedItemsToHtmlString(itemHtmls)
+    }
+    writtenTranslationContext = translationContext
+  }.build()
+
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
+    Log.d("testAnswer", pendingUserAnswer.toString())
   }
 
   /** Returns an HTML list containing all of the HTML string elements as items in the list. */

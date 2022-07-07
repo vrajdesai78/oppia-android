@@ -8,6 +8,7 @@ import androidx.databinding.ObservableField
 import org.oppia.android.R
 import org.oppia.android.app.model.Interaction
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.parser.StringToRatioParser
@@ -70,8 +71,8 @@ class RatioExpressionInputInteractionViewModel(
     }
   }.build()
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
-    Log.d("testAnswer", userAnswer.toString())
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
+    Log.d("testAnswer", pendingUserAnswer.toString())
   }
 
   /** It checks the pending error for the current ratio input, and correspondingly updates the error string based on the specified error category. */
@@ -93,6 +94,25 @@ class RatioExpressionInputInteractionViewModel(
     }
     return pendingAnswerError
   }
+
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
+    if (answerText.isNotEmpty()) {
+      if(pendingAnswerError!=null) {
+        errorMessage = pendingAnswerError
+      }
+      else {
+        val ratioAnswer = stringToRatioParser.parseRatioOrThrow(answerText.toString())
+        answer = InteractionObject.newBuilder().apply {
+          ratioExpression = ratioAnswer
+        }.build()
+        contentDescription = ratioAnswer.toAccessibleAnswerString(resourceHandler)
+      }
+      plainAnswer = answerText.toString()
+      errorState = !pendingAnswerError.isNullOrEmpty()
+      this.writtenTranslationContext =
+        this@RatioExpressionInputInteractionViewModel.writtenTranslationContext
+    }
+  }.build()
 
   fun getAnswerTextWatcher(): TextWatcher {
     return object : TextWatcher {

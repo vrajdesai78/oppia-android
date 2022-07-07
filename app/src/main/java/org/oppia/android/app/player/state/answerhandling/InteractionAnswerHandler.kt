@@ -1,5 +1,6 @@
 package org.oppia.android.app.player.state.answerhandling
 
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 
 /**
@@ -27,7 +28,11 @@ interface InteractionAnswerHandler {
     return null
   }
 
-  fun setPendingAnswer(userAnswer: UserAnswer)
+  fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer)
+
+  fun getPendingUserAnswer(): PendingUserAnswer? {
+    return null
+  }
 }
 
 /**

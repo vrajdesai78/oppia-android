@@ -7,6 +7,7 @@ import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import org.oppia.android.app.model.Interaction
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerErrorOrAvailabilityCheckReceiver
@@ -73,8 +74,19 @@ class TextInputViewModel(
     }
   }.build()
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
-    Log.d("testAnswer", userAnswer.toString())
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
+    if (answerText.isNotEmpty()) {
+      val answerTextString = answerText.toString()
+      answer = InteractionObject.newBuilder().apply {
+        normalizedString = answerTextString
+      }.build()
+      plainAnswer = answerTextString
+      writtenTranslationContext = this@TextInputViewModel.writtenTranslationContext
+    }
+  }.build()
+
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
+    Log.d("testAnswer", pendingUserAnswer.toString())
   }
 
   private fun deriveHintText(interaction: Interaction): CharSequence {

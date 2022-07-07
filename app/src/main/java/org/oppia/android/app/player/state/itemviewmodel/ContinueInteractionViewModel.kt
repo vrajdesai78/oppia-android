@@ -1,6 +1,7 @@
 package org.oppia.android.app.player.state.itemviewmodel
 
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 import org.oppia.android.app.model.WrittenTranslationContext
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerHandler
@@ -38,11 +39,19 @@ class ContinueInteractionViewModel(
     this.writtenTranslationContext = this@ContinueInteractionViewModel.writtenTranslationContext
   }.build()
 
+  override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
+    answer = InteractionObject.newBuilder().apply {
+      normalizedString = DEFAULT_CONTINUE_INTERACTION_TEXT_ANSWER
+    }.build()
+    plainAnswer = DEFAULT_CONTINUE_INTERACTION_TEXT_ANSWER
+    this.writtenTranslationContext = this@ContinueInteractionViewModel.writtenTranslationContext
+  }.build()
+
   fun handleButtonClicked() {
     interactionAnswerReceiver.onAnswerReadyForSubmission(getPendingAnswer())
   }
 
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
     TODO("Not yet implemented")
   }
 }

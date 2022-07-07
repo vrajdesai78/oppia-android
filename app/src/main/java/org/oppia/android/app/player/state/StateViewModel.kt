@@ -11,6 +11,7 @@ import org.oppia.android.app.player.state.itemviewmodel.StateItemViewModel
 import org.oppia.android.app.viewmodel.ObservableArrayList
 import org.oppia.android.app.viewmodel.ObservableViewModel
 import javax.inject.Inject
+import org.oppia.android.app.model.PendingUserAnswer
 
 /** [ViewModel] for state-fragment. */
 @FragmentScope
@@ -56,11 +57,21 @@ class StateViewModel @Inject constructor() : ObservableViewModel() {
     ) ?: UserAnswer.getDefaultInstance()
   }
 
+  fun getPendingUserAnswer(
+    retrieveAnswerHandler: (List<StateItemViewModel>) -> InteractionAnswerHandler?
+  ): PendingUserAnswer {
+    return getPendingUserAnswerWithError(
+      retrieveAnswerHandler(
+        getAnswerItemList()
+      )
+    ) ?: PendingUserAnswer.getDefaultInstance()
+  }
+
   fun setPendingAnswer(
-    userAnswer: UserAnswer,
+    pendingUserAnswer: PendingUserAnswer,
     retrieveAnswerHandler: (List<StateItemViewModel>) -> InteractionAnswerHandler?
   ) {
-    retrieveAnswerHandler(getAnswerItemList())?.setPendingAnswer(userAnswer)
+    retrieveAnswerHandler(getAnswerItemList())?.setPendingUserAnswer(pendingUserAnswer)
   }
 
   private fun getPendingAnswerWithoutError(
@@ -71,6 +82,12 @@ class StateViewModel @Inject constructor() : ObservableViewModel() {
     } else {
       null
     }
+  }
+
+  private fun getPendingUserAnswerWithError(
+    answerHandler: InteractionAnswerHandler?
+  ): PendingUserAnswer? {
+    return answerHandler?.getPendingUserAnswer()
   }
 
   private fun getAnswerItemList(): List<StateItemViewModel> {

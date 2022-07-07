@@ -24,6 +24,7 @@ import org.oppia.android.util.extensions.getStringFromBundle
 import javax.inject.Inject
 import org.oppia.android.R
 import org.oppia.android.app.customview.interaction.FractionInputInteractionView
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.domain.state.RetriveUserAnswer
 import org.oppia.android.util.extensions.getProto
 import org.oppia.android.util.extensions.putProto
@@ -85,12 +86,17 @@ class StateFragment :
     val storyId = arguments!!.getStringFromBundle(STATE_FRAGMENT_STORY_ID_ARGUMENT_KEY)!!
     val explorationId =
       arguments!!.getStringFromBundle(STATE_FRAGMENT_EXPLORATION_ID_ARGUMENT_KEY)!!
+    var pendingUserAnswer: PendingUserAnswer? = null
+    if(savedInstanceState!=null) {
+      pendingUserAnswer = savedInstanceState.getProto("Answer", PendingUserAnswer.getDefaultInstance())
+    }
     return stateFragmentPresenter.handleCreateView(
       inflater,
       container,
       internalProfileId,
       topicId,
       storyId,
+      pendingUserAnswer,
       explorationId
     )
   }
@@ -131,14 +137,6 @@ class StateFragment :
     outState.putProto("Answer", stateFragmentPresenter.handleOnSavedInstance())
   }
 
-  override fun onViewStateRestored(savedInstanceState: Bundle?) {
-    super.onViewStateRestored(savedInstanceState)
-    if(savedInstanceState!=null) {
-      val userAnswer = savedInstanceState.getProto("Answer", UserAnswer.getDefaultInstance())
-      stateFragmentPresenter.handleOnViewRestored(userAnswer)
-    }
-  }
-
   fun setAudioBarVisibility(visibility: Boolean) =
     stateFragmentPresenter.setAudioBarVisibility(visibility)
 
@@ -153,7 +151,7 @@ class StateFragment :
   fun dismissConceptCard() = stateFragmentPresenter.dismissConceptCard()
 
   fun getExplorationCheckpointState() = stateFragmentPresenter.getExplorationCheckpointState()
-  override fun setPendingAnswer(userAnswer: UserAnswer) {
+  override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
     TODO("Not yet implemented")
   }
 }
