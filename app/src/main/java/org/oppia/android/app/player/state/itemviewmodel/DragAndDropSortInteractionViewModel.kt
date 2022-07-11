@@ -138,17 +138,19 @@ class DragAndDropSortInteractionViewModel(
   }.build()
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    val selectedLists = _choiceItems.map { it.htmlContent }
-    val userStringLists = _choiceItems.map { it.computeStringList() }
-    listOfHtmlAnswers = convertItemsToAnswer(userStringLists)
-    answer = InteractionObject.newBuilder().apply {
-      listOfSetsOfTranslatableHtmlContentIds =
-        ListOfSetsOfTranslatableHtmlContentIds.newBuilder().apply {
-          addAllContentIdLists(selectedLists)
-        }.build()
+    userAnswer = UserAnswer.newBuilder().apply {
+      val selectedLists = _choiceItems.map { it.htmlContent }
+      val userStringLists = _choiceItems.map { it.computeStringList() }
+      listOfHtmlAnswers = convertItemsToAnswer(userStringLists)
+      answer = InteractionObject.newBuilder().apply {
+        listOfSetsOfTranslatableHtmlContentIds =
+          ListOfSetsOfTranslatableHtmlContentIds.newBuilder().apply {
+            addAllContentIdLists(selectedLists)
+          }.build()
+      }.build()
+      this.writtenTranslationContext =
+        this@DragAndDropSortInteractionViewModel.writtenTranslationContext
     }.build()
-    this.writtenTranslationContext =
-      this@DragAndDropSortInteractionViewModel.writtenTranslationContext
   }.build()
 
   /** Returns an HTML list containing all of the HTML string elements as items in the list. */

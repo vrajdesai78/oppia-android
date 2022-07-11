@@ -94,19 +94,23 @@ class NumericInputViewModel(
   }.build()
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    if (answerText.isNotEmpty()) {
-      val answerTextString = answerText.toString()
-      if(pendingAnswerError!=null) {
-        this.errorMessage = pendingAnswerError
-      }
-      else {
-        answer = InteractionObject.newBuilder().apply {
-          real = answerTextString.toDouble()
+    if(pendingAnswerError==null) {
+      if (answerText.isNotEmpty()) {
+        userAnswer = UserAnswer.newBuilder().apply {
+          val answerTextString = answerText.toString()
+          answer = InteractionObject.newBuilder().apply {
+            real = answerTextString.toDouble()
+          }.build()
+          plainAnswer = answerTextString
+          this.writtenTranslationContext = this@NumericInputViewModel.writtenTranslationContext
         }.build()
       }
-      plainAnswer = answerTextString
-      this.errorState = !pendingAnswerError.isNullOrEmpty()
-      this.writtenTranslationContext = this@NumericInputViewModel.writtenTranslationContext
+    }
+    else {
+      errorMessage = pendingAnswerError
+      userAnswer = UserAnswer.newBuilder().apply {
+        plainAnswer = answerText.toString()
+      }.build()
     }
   }.build()
 

@@ -88,16 +88,18 @@ class ImageRegionSelectionInteractionViewModel(
   }.build()
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    val answerTextString = answerText.toString()
-    answer = InteractionObject.newBuilder().apply {
-      clickOnImage = parseClickOnImage(answerTextString)
+    userAnswer = UserAnswer.newBuilder().apply {
+      val answerTextString = answerText.toString()
+      answer = InteractionObject.newBuilder().apply {
+        clickOnImage = parseClickOnImage(answerTextString)
+      }.build()
+      plainAnswer = resourceHandler.getStringInLocaleWithWrapping(
+        R.string.image_interaction_answer_text,
+        answerTextString
+      )
+      this.writtenTranslationContext =
+        this@ImageRegionSelectionInteractionViewModel.writtenTranslationContext
     }.build()
-    plainAnswer = resourceHandler.getStringInLocaleWithWrapping(
-      R.string.image_interaction_answer_text,
-      answerTextString
-    )
-    this.writtenTranslationContext =
-      this@ImageRegionSelectionInteractionViewModel.writtenTranslationContext
   }.build()
 
   override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {

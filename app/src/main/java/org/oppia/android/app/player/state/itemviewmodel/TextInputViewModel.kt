@@ -75,14 +75,16 @@ class TextInputViewModel(
   }.build()
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    if (answerText.isNotEmpty()) {
-      val answerTextString = answerText.toString()
-      answer = InteractionObject.newBuilder().apply {
-        normalizedString = answerTextString
-      }.build()
-      plainAnswer = answerTextString
-      writtenTranslationContext = this@TextInputViewModel.writtenTranslationContext
-    }
+    userAnswer = UserAnswer.newBuilder().apply {
+      if (answerText.isNotEmpty()) {
+        val answerTextString = answerText.toString()
+        answer = InteractionObject.newBuilder().apply {
+          normalizedString = answerTextString
+        }.build()
+        plainAnswer = answerTextString
+        writtenTranslationContext = this@TextInputViewModel.writtenTranslationContext
+      }
+    }.build()
   }.build()
 
   override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {

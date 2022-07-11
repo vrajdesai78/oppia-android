@@ -40,11 +40,13 @@ class ContinueInteractionViewModel(
   }.build()
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    answer = InteractionObject.newBuilder().apply {
-      normalizedString = DEFAULT_CONTINUE_INTERACTION_TEXT_ANSWER
+    userAnswer = UserAnswer.newBuilder().apply {
+      answer = InteractionObject.newBuilder().apply {
+        normalizedString = DEFAULT_CONTINUE_INTERACTION_TEXT_ANSWER
+      }.build()
+      plainAnswer = DEFAULT_CONTINUE_INTERACTION_TEXT_ANSWER
+      this.writtenTranslationContext = this@ContinueInteractionViewModel.writtenTranslationContext
     }.build()
-    plainAnswer = DEFAULT_CONTINUE_INTERACTION_TEXT_ANSWER
-    this.writtenTranslationContext = this@ContinueInteractionViewModel.writtenTranslationContext
   }.build()
 
   fun handleButtonClicked() {

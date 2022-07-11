@@ -110,31 +110,33 @@ class SelectionInteractionViewModel(
   }.build()
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    val translationContext = this@SelectionInteractionViewModel.writtenTranslationContext
-    val selectedItemSubtitledHtmls = selectedItems.map(choiceItems::get).map { it.htmlContent }
-    val itemHtmls = selectedItemSubtitledHtmls.map { subtitledHtml ->
-      translationController.extractString(subtitledHtml, translationContext)
-    }
-    if (interactionId == "ItemSelectionInput") {
-      answer = InteractionObject.newBuilder().apply {
-        setOfTranslatableHtmlContentIds = SetOfTranslatableHtmlContentIds.newBuilder().apply {
-          addAllContentIds(
-            selectedItemSubtitledHtmls.map { subtitledHtml ->
-              TranslatableHtmlContentId.newBuilder().apply {
-                contentId = subtitledHtml.contentId
-              }.build()
-            }
-          )
+    userAnswer = UserAnswer.newBuilder().apply {
+      val translationContext = this@SelectionInteractionViewModel.writtenTranslationContext
+      val selectedItemSubtitledHtmls = selectedItems.map(choiceItems::get).map { it.htmlContent }
+      val itemHtmls = selectedItemSubtitledHtmls.map { subtitledHtml ->
+        translationController.extractString(subtitledHtml, translationContext)
+      }
+      if (interactionId == "ItemSelectionInput") {
+        answer = InteractionObject.newBuilder().apply {
+          setOfTranslatableHtmlContentIds = SetOfTranslatableHtmlContentIds.newBuilder().apply {
+            addAllContentIds(
+              selectedItemSubtitledHtmls.map { subtitledHtml ->
+                TranslatableHtmlContentId.newBuilder().apply {
+                  contentId = subtitledHtml.contentId
+                }.build()
+              }
+            )
+          }.build()
         }.build()
-      }.build()
-      htmlAnswer = convertSelectedItemsToHtmlString(itemHtmls)
-    } else if (selectedItems.size == 1) {
-      answer = InteractionObject.newBuilder().apply {
-        nonNegativeInt = selectedItems.first()
-      }.build()
-      htmlAnswer = convertSelectedItemsToHtmlString(itemHtmls)
-    }
-    writtenTranslationContext = translationContext
+        htmlAnswer = convertSelectedItemsToHtmlString(itemHtmls)
+      } else if (selectedItems.size == 1) {
+        answer = InteractionObject.newBuilder().apply {
+          nonNegativeInt = selectedItems.first()
+        }.build()
+        htmlAnswer = convertSelectedItemsToHtmlString(itemHtmls)
+      }
+      writtenTranslationContext = translationContext
+    }.build()
   }.build()
 
   override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {

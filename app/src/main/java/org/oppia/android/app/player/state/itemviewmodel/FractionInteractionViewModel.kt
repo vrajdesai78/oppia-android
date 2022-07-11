@@ -88,18 +88,23 @@ class FractionInteractionViewModel(
   }
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    if (answerText.isNotEmpty()) {
-      val answerTextString = answerText.toString()
-      plainAnswer = answerTextString
-      if(pendingAnswerError!=null) {
-        errorMessage = pendingAnswerError
-      } else {
-          answer = InteractionObject.newBuilder().apply {
-          fraction = stringToFractionParser.parseFractionFromString(answerTextString)
-          }.build()
+    if(pendingAnswerError==null) {
+      if (answerText.isNotEmpty()) {
+        userAnswer = UserAnswer.newBuilder().apply {
+            val answerTextString = answerText.toString()
+            answer = InteractionObject.newBuilder().apply {
+              fraction = stringToFractionParser.parseFractionFromString(answerTextString)
+            }.build()
+            plainAnswer = answerTextString
+            this.writtenTranslationContext =
+              this@FractionInteractionViewModel.writtenTranslationContext
+        }.build()
       }
-      this.errorState = !pendingAnswerError.isNullOrBlank()
-      this.writtenTranslationContext = this@FractionInteractionViewModel.writtenTranslationContext
+    } else {
+      errorMessage = pendingAnswerError
+      userAnswer = UserAnswer.newBuilder().apply {
+        plainAnswer = answerText.toString()
+      }.build()
     }
   }.build()
 
