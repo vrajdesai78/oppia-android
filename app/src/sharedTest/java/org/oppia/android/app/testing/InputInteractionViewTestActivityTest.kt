@@ -11,6 +11,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -39,19 +40,23 @@ import org.oppia.android.app.customview.interaction.RatioInputInteractionView
 import org.oppia.android.app.devoptions.DeveloperOptionsModule
 import org.oppia.android.app.devoptions.DeveloperOptionsStarterModule
 import org.oppia.android.app.model.InteractionObject
+import org.oppia.android.app.player.state.itemviewmodel.SplitScreenInteractionModule
 import org.oppia.android.app.shim.ViewBindingShimModule
 import org.oppia.android.app.topic.PracticeTabModule
 import org.oppia.android.app.translation.testing.ActivityRecreatorTestModule
 import org.oppia.android.data.backends.gae.NetworkConfigProdModule
 import org.oppia.android.data.backends.gae.NetworkModule
 import org.oppia.android.domain.classify.InteractionsModule
+import org.oppia.android.domain.classify.rules.algebraicexpressioninput.AlgebraicExpressionInputModule
 import org.oppia.android.domain.classify.rules.continueinteraction.ContinueModule
 import org.oppia.android.domain.classify.rules.dragAndDropSortInput.DragDropSortInputModule
 import org.oppia.android.domain.classify.rules.fractioninput.FractionInputModule
 import org.oppia.android.domain.classify.rules.imageClickInput.ImageClickInputModule
 import org.oppia.android.domain.classify.rules.itemselectioninput.ItemSelectionInputModule
+import org.oppia.android.domain.classify.rules.mathequationinput.MathEquationInputModule
 import org.oppia.android.domain.classify.rules.multiplechoiceinput.MultipleChoiceInputModule
 import org.oppia.android.domain.classify.rules.numberwithunits.NumberWithUnitsRuleModule
+import org.oppia.android.domain.classify.rules.numericexpressioninput.NumericExpressionInputModule
 import org.oppia.android.domain.classify.rules.numericinput.NumericInputRuleModule
 import org.oppia.android.domain.classify.rules.ratioinput.RatioInputModule
 import org.oppia.android.domain.classify.rules.textinput.TextInputRuleModule
@@ -60,6 +65,8 @@ import org.oppia.android.domain.hintsandsolution.HintsAndSolutionConfigModule
 import org.oppia.android.domain.hintsandsolution.HintsAndSolutionProdModule
 import org.oppia.android.domain.onboarding.ExpirationMetaDataRetrieverModule
 import org.oppia.android.domain.oppialogger.LogStorageModule
+import org.oppia.android.domain.oppialogger.LoggingIdentifierModule
+import org.oppia.android.domain.oppialogger.analytics.ApplicationLifecycleModule
 import org.oppia.android.domain.oppialogger.loguploader.LogUploadWorkerModule
 import org.oppia.android.domain.platformparameter.PlatformParameterModule
 import org.oppia.android.domain.platformparameter.PlatformParameterSingletonModule
@@ -81,6 +88,7 @@ import org.oppia.android.util.caching.testing.CachingTestModule
 import org.oppia.android.util.gcsresource.GcsResourceModule
 import org.oppia.android.util.locale.LocaleProdModule
 import org.oppia.android.util.logging.LoggerModule
+import org.oppia.android.util.logging.SyncStatusModule
 import org.oppia.android.util.logging.firebase.FirebaseLogUploaderModule
 import org.oppia.android.util.networking.NetworkConnectionDebugUtilModule
 import org.oppia.android.util.networking.NetworkConnectionUtilDebugModule
@@ -127,6 +135,8 @@ class InputInteractionViewTestActivityTest {
     ApplicationProvider.getApplicationContext<TestApplication>().inject(this)
   }
 
+  // TODO(#4135): Move fraction input tests to a dedicated test suite.
+
   @Test
   fun testFractionInput_withNoInput_hasCorrectPendingAnswerType() {
     val activityScenario = ActivityScenario.launch(
@@ -142,7 +152,7 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and will not be used by user
   fun testFractionInput_withNegativeNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -161,7 +171,7 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and will not be used by user
   fun testFractionInput_withWholeNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -180,7 +190,7 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and will not be used by user
   fun testFractionInput_withFraction_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -204,7 +214,7 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and will not be used by user
   fun testFractionInput_withNegativeFraction_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -228,7 +238,7 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and will not be used by user
   fun testFractionInput_withMixedNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -253,7 +263,7 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and will not be used by user
   fun testFractionInput_withNegativeMixedNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -297,7 +307,7 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and will not be used by user
   fun testFractionInput_withNegativeSignOtherThanAt0_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -317,7 +327,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withNegativeSignAt0MoreThan1_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -337,7 +348,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withDividerMoreThanOnce_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -357,7 +369,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withDividerAtStart_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -377,7 +390,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withPartialMixedNumber_numberFormatErrorIsNotDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -390,7 +404,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withPartialMixedNumberSubmit_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -400,6 +415,7 @@ class InputInteractionViewTestActivityTest {
         )
       )
     closeSoftKeyboard()
+    scrollToSubmitButton()
     onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
     onView(withId(R.id.fraction_input_error))
       .check(
@@ -412,7 +428,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withMixedNumber_submit_noErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -422,12 +439,14 @@ class InputInteractionViewTestActivityTest {
         )
       )
     closeSoftKeyboard()
+    scrollToSubmitButton()
     onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
     onView(withId(R.id.fraction_input_error)).check(matches(withText("")))
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withDivideByZero_errorIsNotDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -440,7 +459,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withDivideByZero_submit_divideByZeroErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_fraction_input_interaction_view))
@@ -450,6 +470,7 @@ class InputInteractionViewTestActivityTest {
         )
       )
     closeSoftKeyboard()
+    scrollToSubmitButton()
     onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
     onView(withId(R.id.fraction_input_error))
       .check(
@@ -462,7 +483,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withInvalidCharacter_invalidCharacterErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_fraction_input_interaction_view))
@@ -483,7 +505,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testFractionInput_withLong_submit_numberTooLongErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_fraction_input_interaction_view))
@@ -493,6 +516,7 @@ class InputInteractionViewTestActivityTest {
           )
         )
       closeSoftKeyboard()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.fraction_input_error))
         .check(
@@ -518,7 +542,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withRealNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -540,7 +565,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withRealNumberWithDecimal_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -561,7 +587,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withNegativeRealNumber_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -598,7 +625,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withInvalidCharacter_invalidCharacterErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -619,7 +647,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withLongNumber_submit_numberTooLongErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -629,6 +658,7 @@ class InputInteractionViewTestActivityTest {
           )
         )
       closeSoftKeyboard()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.number_input_error))
         .check(
@@ -642,7 +672,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withLongInteger_submit_numberTooLongErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -652,6 +683,7 @@ class InputInteractionViewTestActivityTest {
           )
         )
       closeSoftKeyboard()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.number_input_error))
         .check(
@@ -665,7 +697,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withMinusSymbol_submit_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       onView(withId(R.id.test_number_input_interaction_view))
@@ -675,6 +708,7 @@ class InputInteractionViewTestActivityTest {
           )
         )
       closeSoftKeyboard()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.number_input_error))
         .check(
@@ -688,7 +722,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withNegativeSymbolNotAt0_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -704,7 +739,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withNegativeSignAt0MoreThan1_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -724,7 +760,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withFloatingPointMoreThanOnce_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -744,7 +781,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testNumericInput_withDecimalAtStart_numberStartingWithFloatingPointError() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java)
     onView(withId(R.id.test_number_input_interaction_view))
@@ -772,7 +810,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testTextInput_withChar_hasCorrectPendingAnswer() {
     val activityScenario = ActivityScenario.launch(
       InputInteractionViewTestActivity::class.java
@@ -910,7 +949,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testRatioInput_withZeroRatio_submit_numberWithZerosErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -921,6 +961,7 @@ class InputInteractionViewTestActivityTest {
           )
         )
       testCoroutineDispatchers.runCurrent()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.ratio_input_error))
         .check(
@@ -934,7 +975,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testRatioInput_withInvalidRatio_submit_numberFormatErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -946,6 +988,7 @@ class InputInteractionViewTestActivityTest {
         )
       closeSoftKeyboard()
       testCoroutineDispatchers.runCurrent()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       testCoroutineDispatchers.runCurrent()
       onView(withId(R.id.ratio_input_error))
@@ -960,7 +1003,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testRatioInput_withRatioHaving4Terms_submit_invalidSizeErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -972,6 +1016,7 @@ class InputInteractionViewTestActivityTest {
         )
       closeSoftKeyboard()
       testCoroutineDispatchers.runCurrent()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.ratio_input_error))
         .check(
@@ -985,7 +1030,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testRatioInput_withRatioHaving2Terms_submit_invalidSizeErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -997,6 +1043,7 @@ class InputInteractionViewTestActivityTest {
         )
       closeSoftKeyboard()
       testCoroutineDispatchers.runCurrent()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.ratio_input_error))
         .check(
@@ -1010,7 +1057,8 @@ class InputInteractionViewTestActivityTest {
   }
 
   @Test
-  @DisableAccessibilityChecks
+  @DisableAccessibilityChecks // Disabled, as InputInteractionViewTestActivity is a test file and
+  // will not be used by user
   fun testRatioInput_withRatioHaving3Terms_submit_noErrorIsDisplayed() {
     ActivityScenario.launch(InputInteractionViewTestActivity::class.java).use {
       testCoroutineDispatchers.runCurrent()
@@ -1021,9 +1069,15 @@ class InputInteractionViewTestActivityTest {
           )
         )
       closeSoftKeyboard()
+      scrollToSubmitButton()
       onView(withId(R.id.submit_button)).check(matches(isDisplayed())).perform(click())
       onView(withId(R.id.ratio_input_error)).check(matches(withText("")))
     }
+  }
+
+  private fun scrollToSubmitButton() {
+    onView(withId(R.id.submit_button)).perform(scrollTo())
+    testCoroutineDispatchers.runCurrent()
   }
 
   private fun setTextToRatioInputInteractionView(
@@ -1067,7 +1121,11 @@ class InputInteractionViewTestActivityTest {
       DeveloperOptionsStarterModule::class, DeveloperOptionsModule::class,
       ExplorationStorageModule::class, NetworkModule::class, NetworkConfigProdModule::class,
       NetworkConnectionUtilDebugModule::class, NetworkConnectionDebugUtilModule::class,
-      AssetModule::class, LocaleProdModule::class, ActivityRecreatorTestModule::class
+      AssetModule::class, LocaleProdModule::class, ActivityRecreatorTestModule::class,
+      NumericExpressionInputModule::class, AlgebraicExpressionInputModule::class,
+      MathEquationInputModule::class, SplitScreenInteractionModule::class,
+      LoggingIdentifierModule::class, ApplicationLifecycleModule::class,
+      SyncStatusModule::class
     ]
   )
   interface TestApplicationComponent : ApplicationComponent {

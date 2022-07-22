@@ -14,8 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import dagger.Component
-import dagger.Module
-import dagger.Provides
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -35,6 +33,7 @@ import org.oppia.android.app.options.AppLanguageFragment
 import org.oppia.android.app.options.AudioLanguageFragment
 import org.oppia.android.app.options.OptionsActivity
 import org.oppia.android.app.options.ReadingTextSizeFragment
+import org.oppia.android.app.player.state.itemviewmodel.SplitScreenInteractionModule
 import org.oppia.android.app.recyclerview.RecyclerViewMatcher.Companion.atPositionOnView
 import org.oppia.android.app.shim.ViewBindingShimModule
 import org.oppia.android.app.topic.PracticeTabModule
@@ -42,13 +41,16 @@ import org.oppia.android.app.translation.testing.ActivityRecreatorTestModule
 import org.oppia.android.data.backends.gae.NetworkConfigProdModule
 import org.oppia.android.data.backends.gae.NetworkModule
 import org.oppia.android.domain.classify.InteractionsModule
+import org.oppia.android.domain.classify.rules.algebraicexpressioninput.AlgebraicExpressionInputModule
 import org.oppia.android.domain.classify.rules.continueinteraction.ContinueModule
 import org.oppia.android.domain.classify.rules.dragAndDropSortInput.DragDropSortInputModule
 import org.oppia.android.domain.classify.rules.fractioninput.FractionInputModule
 import org.oppia.android.domain.classify.rules.imageClickInput.ImageClickInputModule
 import org.oppia.android.domain.classify.rules.itemselectioninput.ItemSelectionInputModule
+import org.oppia.android.domain.classify.rules.mathequationinput.MathEquationInputModule
 import org.oppia.android.domain.classify.rules.multiplechoiceinput.MultipleChoiceInputModule
 import org.oppia.android.domain.classify.rules.numberwithunits.NumberWithUnitsRuleModule
+import org.oppia.android.domain.classify.rules.numericexpressioninput.NumericExpressionInputModule
 import org.oppia.android.domain.classify.rules.numericinput.NumericInputRuleModule
 import org.oppia.android.domain.classify.rules.ratioinput.RatioInputModule
 import org.oppia.android.domain.classify.rules.textinput.TextInputRuleModule
@@ -57,6 +59,8 @@ import org.oppia.android.domain.hintsandsolution.HintsAndSolutionConfigModule
 import org.oppia.android.domain.hintsandsolution.HintsAndSolutionProdModule
 import org.oppia.android.domain.onboarding.ExpirationMetaDataRetrieverModule
 import org.oppia.android.domain.oppialogger.LogStorageModule
+import org.oppia.android.domain.oppialogger.LoggingIdentifierModule
+import org.oppia.android.domain.oppialogger.analytics.ApplicationLifecycleModule
 import org.oppia.android.domain.oppialogger.loguploader.LogUploadWorkerModule
 import org.oppia.android.domain.platformparameter.PlatformParameterSingletonModule
 import org.oppia.android.domain.question.QuestionModule
@@ -64,6 +68,7 @@ import org.oppia.android.domain.topic.PrimeTopicAssetsControllerModule
 import org.oppia.android.domain.workmanager.WorkManagerConfigurationModule
 import org.oppia.android.testing.TestLogReportingModule
 import org.oppia.android.testing.junit.InitializeDefaultLocaleRule
+import org.oppia.android.testing.platformparameter.TestPlatformParameterModule
 import org.oppia.android.testing.robolectric.RobolectricModule
 import org.oppia.android.testing.threading.TestCoroutineDispatchers
 import org.oppia.android.testing.threading.TestDispatcherModule
@@ -74,18 +79,14 @@ import org.oppia.android.util.caching.testing.CachingTestModule
 import org.oppia.android.util.gcsresource.GcsResourceModule
 import org.oppia.android.util.locale.LocaleProdModule
 import org.oppia.android.util.logging.LoggerModule
+import org.oppia.android.util.logging.SyncStatusModule
 import org.oppia.android.util.logging.firebase.FirebaseLogUploaderModule
 import org.oppia.android.util.networking.NetworkConnectionDebugUtilModule
 import org.oppia.android.util.networking.NetworkConnectionUtilDebugModule
 import org.oppia.android.util.parser.html.HtmlParserEntityTypeModule
 import org.oppia.android.util.parser.image.GlideImageLoaderModule
 import org.oppia.android.util.parser.image.ImageParsingModule
-import org.oppia.android.util.platformparameter.EnableLanguageSelectionUi
-import org.oppia.android.util.platformparameter.PlatformParameterValue
-import org.oppia.android.util.platformparameter.SPLASH_SCREEN_WELCOME_MSG_DEFAULT_VALUE
-import org.oppia.android.util.platformparameter.SYNC_UP_WORKER_TIME_PERIOD_IN_HOURS_DEFAULT_VALUE
-import org.oppia.android.util.platformparameter.SplashScreenWelcomeMsg
-import org.oppia.android.util.platformparameter.SyncUpWorkerTimePeriodHours
+import org.oppia.android.util.platformparameter.ENABLE_EDIT_ACCOUNTS_OPTIONS_UI_DEFAULT_VALUE
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import javax.inject.Inject
@@ -103,7 +104,10 @@ class OptionsFragmentTest {
 
   @Before
   fun setUp() {
-    TestModule.forceEnableLanguageSelectionUi = true
+    TestPlatformParameterModule.forceEnableLanguageSelectionUi(true)
+    TestPlatformParameterModule.forceEnableEditAccountsOptionsUi(
+      ENABLE_EDIT_ACCOUNTS_OPTIONS_UI_DEFAULT_VALUE
+    )
     setUpTestApplicationComponent()
     testCoroutineDispatchers.registerIdlingResource()
   }
@@ -148,7 +152,6 @@ class OptionsFragmentTest {
 
   @Test
   fun testOptionsFragment_featureEnabled_appLanguageItemIsDisplayed() {
-    TestModule.forceEnableLanguageSelectionUi = true
     launch<OptionsActivity>(createOptionActivityIntent(0, true)).use {
       testCoroutineDispatchers.runCurrent()
 
@@ -158,7 +161,7 @@ class OptionsFragmentTest {
 
   @Test
   fun testOptionsFragment_featureDisabled_appLanguageItemIsNotDisplayed() {
-    TestModule.forceEnableLanguageSelectionUi = false
+    TestPlatformParameterModule.forceEnableLanguageSelectionUi(false)
     launch<OptionsActivity>(createOptionActivityIntent(0, true)).use {
       testCoroutineDispatchers.runCurrent()
 
@@ -223,39 +226,12 @@ class OptionsFragmentTest {
     ApplicationProvider.getApplicationContext<TestApplication>().inject(this)
   }
 
-  @Module
-  class TestModule {
-    companion object {
-      var forceEnableLanguageSelectionUi: Boolean = true
-    }
-
-    @Provides
-    @SplashScreenWelcomeMsg
-    fun provideSplashScreenWelcomeMsgParam(): PlatformParameterValue<Boolean> {
-      return PlatformParameterValue.createDefaultParameter(SPLASH_SCREEN_WELCOME_MSG_DEFAULT_VALUE)
-    }
-
-    @Provides
-    @SyncUpWorkerTimePeriodHours
-    fun provideSyncUpWorkerTimePeriod(): PlatformParameterValue<Int> {
-      return PlatformParameterValue.createDefaultParameter(
-        SYNC_UP_WORKER_TIME_PERIOD_IN_HOURS_DEFAULT_VALUE
-      )
-    }
-
-    @Provides
-    @EnableLanguageSelectionUi
-    fun provideEnableLanguageSelectionUi(): PlatformParameterValue<Boolean> {
-      return PlatformParameterValue.createDefaultParameter(forceEnableLanguageSelectionUi)
-    }
-  }
-
   // TODO(#59): Figure out a way to reuse modules instead of needing to re-declare them.
   @Singleton
   @Component(
     modules = [
       TestDispatcherModule::class, ApplicationModule::class, RobolectricModule::class,
-      TestModule::class, PlatformParameterSingletonModule::class,
+      TestPlatformParameterModule::class, PlatformParameterSingletonModule::class,
       LoggerModule::class, ContinueModule::class, FractionInputModule::class,
       ItemSelectionInputModule::class, MultipleChoiceInputModule::class,
       NumberWithUnitsRuleModule::class, NumericInputRuleModule::class, TextInputRuleModule::class,
@@ -271,7 +247,11 @@ class OptionsFragmentTest {
       DeveloperOptionsStarterModule::class, DeveloperOptionsModule::class,
       ExplorationStorageModule::class, NetworkModule::class, HintsAndSolutionProdModule::class,
       NetworkConnectionUtilDebugModule::class, NetworkConnectionDebugUtilModule::class,
-      AssetModule::class, LocaleProdModule::class, ActivityRecreatorTestModule::class
+      AssetModule::class, LocaleProdModule::class, ActivityRecreatorTestModule::class,
+      NumericExpressionInputModule::class, AlgebraicExpressionInputModule::class,
+      MathEquationInputModule::class, SplitScreenInteractionModule::class,
+      LoggingIdentifierModule::class, ApplicationLifecycleModule::class,
+      SyncStatusModule::class
     ]
   )
   interface TestApplicationComponent : ApplicationComponent {
