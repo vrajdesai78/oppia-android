@@ -66,5 +66,4 @@ class PlatformParameterModule {
       ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
     )
   }
-
 }

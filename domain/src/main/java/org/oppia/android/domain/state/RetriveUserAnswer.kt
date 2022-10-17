@@ -1,7 +1,7 @@
 package org.oppia.android.domain.state
 
-import javax.inject.Singleton
 import org.oppia.android.app.model.UserAnswer
+import javax.inject.Singleton
 
 @Singleton
 object RetriveUserAnswer {

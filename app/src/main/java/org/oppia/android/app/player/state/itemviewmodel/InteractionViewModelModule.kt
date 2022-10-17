@@ -26,7 +26,7 @@ class InteractionViewModelModule {
   @StringKey("Continue")
   fun provideContinueInteractionViewModelFactory(fragment: Fragment): InteractionViewModelFactory {
     return { _, hasConversationView, _, interactionAnswerReceiver, _, hasPreviousButton,
-      isSplitView,_ ,writtenTranslationContext ->
+             isSplitView, _, writtenTranslationContext ->
       ContinueInteractionViewModel(
         interactionAnswerReceiver,
         hasConversationView,
@@ -45,7 +45,8 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { entityId, hasConversationView, interaction, interactionAnswerReceiver,
-      interactionAnswerErrorReceiver, _, isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
+             interactionAnswerErrorReceiver, _, isSplitView,
+             isConfigurationChangeEnabled, writtenTranslationContext ->
       SelectionInteractionViewModel(
         entityId,
         hasConversationView,
@@ -67,7 +68,7 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { entityId, hasConversationView, interaction, interactionAnswerReceiver,
-      interactionAnswerErrorReceiver, _, isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
+             interactionAnswerErrorReceiver, _, isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
       SelectionInteractionViewModel(
         entityId,
         hasConversationView,
@@ -90,7 +91,7 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { _, hasConversationView, interaction, _, interactionAnswerErrorReceiver, _,
-      isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
+             isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
       FractionInteractionViewModel(
         interaction,
         hasConversationView,
@@ -111,7 +112,7 @@ class InteractionViewModelModule {
     resourceHandler: AppLanguageResourceHandler
   ): InteractionViewModelFactory {
     return { _, hasConversationView, _, _, interactionAnswerErrorReceiver, _, isSplitView, isConfigurationChangeEnabled,
-      writtenTranslationContext ->
+             writtenTranslationContext ->
       NumericInputViewModel(
         hasConversationView,
         interactionAnswerErrorReceiver,
@@ -130,7 +131,7 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { _, hasConversationView, interaction, _, interactionAnswerErrorReceiver, _,
-      isSplitView,isConfigurationChangeEnabled, writtenTranslationContext ->
+             isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
       TextInputViewModel(
         interaction, hasConversationView, interactionAnswerErrorReceiver, isSplitView,
         writtenTranslationContext, isConfigurationChangeEnabled, translationController
@@ -146,10 +147,17 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { entityId, hasConversationView, interaction, _, interactionAnswerErrorReceiver, _,
-      isSplitView, isConfigurationChangeEnabled,  writtenTranslationContext ->
+             isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
       DragAndDropSortInteractionViewModel(
-        entityId, hasConversationView, interaction, interactionAnswerErrorReceiver, isSplitView,
-        writtenTranslationContext, resourceHandler, isConfigurationChangeEnabled, translationController
+        entityId,
+        hasConversationView,
+        interaction,
+        interactionAnswerErrorReceiver,
+        isSplitView,
+        writtenTranslationContext,
+        resourceHandler,
+        isConfigurationChangeEnabled,
+        translationController
       )
     }
   }
@@ -161,7 +169,7 @@ class InteractionViewModelModule {
     resourceHandler: AppLanguageResourceHandler
   ): InteractionViewModelFactory {
     return { entityId, hasConversationView, interaction, _, answerErrorReceiver, _, isSplitView,
-      isConfigurationChangeEnabled, writtenTranslationContext ->
+             isConfigurationChangeEnabled, writtenTranslationContext ->
       ImageRegionSelectionInteractionViewModel(
         entityId,
         hasConversationView,

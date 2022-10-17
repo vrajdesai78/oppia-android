@@ -96,23 +96,22 @@ class RatioExpressionInputInteractionViewModel(
   }
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    if(pendingAnswerError==null) {
+    if (pendingAnswerError == null) {
       if (answerText.isNotEmpty()) {
-      userAnswer = UserAnswer.newBuilder().apply {
-        if (answerText.isNotEmpty()) {
-          val ratioAnswer = stringToRatioParser.parseRatioOrThrow(answerText.toString())
-          answer = InteractionObject.newBuilder().apply {
-            ratioExpression = ratioAnswer
-          }.build()
-          plainAnswer = ratioAnswer.toAnswerString()
-          contentDescription = ratioAnswer.toAccessibleAnswerString(resourceHandler)
-          this.writtenTranslationContext =
-            this@RatioExpressionInputInteractionViewModel.writtenTranslationContext
+        userAnswer = UserAnswer.newBuilder().apply {
+          if (answerText.isNotEmpty()) {
+            val ratioAnswer = stringToRatioParser.parseRatioOrThrow(answerText.toString())
+            answer = InteractionObject.newBuilder().apply {
+              ratioExpression = ratioAnswer
+            }.build()
+            plainAnswer = ratioAnswer.toAnswerString()
+            contentDescription = ratioAnswer.toAccessibleAnswerString(resourceHandler)
+            this.writtenTranslationContext =
+              this@RatioExpressionInputInteractionViewModel.writtenTranslationContext
           }
         }.build()
       }
-    }
-    else {
+    } else {
       errorMessage = pendingAnswerError
       userAnswer = UserAnswer.newBuilder().apply {
         plainAnswer = answerText.toString()

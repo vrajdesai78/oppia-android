@@ -22,10 +22,9 @@ import org.oppia.android.app.player.state.listener.StateKeyboardButtonListener
 import org.oppia.android.app.translation.AppLanguageResourceHandler
 import org.oppia.android.databinding.ActivityInputInteractionViewTestBinding
 import org.oppia.android.domain.translation.TranslationController
-import javax.inject.Inject
 import org.oppia.android.util.platformparameter.ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
-import org.oppia.android.util.platformparameter.EnableConfigurationChange
 import org.oppia.android.util.platformparameter.PlatformParameterValue
+import javax.inject.Inject
 
 /**
  * This is a dummy activity to test input interaction views.
@@ -55,6 +54,7 @@ class InputInteractionViewTestActivity :
       enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
         ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
     )
+
   }
 
   val textInputViewModel by lazy {
@@ -68,6 +68,7 @@ class InputInteractionViewTestActivity :
       enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
         ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
     )
+
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +103,7 @@ class InputInteractionViewTestActivity :
       enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
         ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
     )
+
     binding.numericInputViewModel = numericInputViewModel
     binding.textInputViewModel = textInputViewModel
     binding.fractionInteractionViewModel = fractionInteractionViewModel

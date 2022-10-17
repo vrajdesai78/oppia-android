@@ -66,7 +66,7 @@ class FractionInteractionViewModel(
   }.build()
 
   override fun setPendingUserAnswer(pendingUserAnswer: PendingUserAnswer) {
-      Log.d("testAnswer", pendingUserAnswer.toString())
+    Log.d("testAnswer", pendingUserAnswer.toString())
   }
 
   /** It checks the pending error for the current fraction input, and correspondingly updates the error string based on the specified error category. */
@@ -88,16 +88,16 @@ class FractionInteractionViewModel(
   }
 
   override fun getPendingUserAnswer(): PendingUserAnswer = PendingUserAnswer.newBuilder().apply {
-    if(pendingAnswerError==null) {
+    if (pendingAnswerError == null) {
       if (answerText.isNotEmpty()) {
         userAnswer = UserAnswer.newBuilder().apply {
-            val answerTextString = answerText.toString()
-            answer = InteractionObject.newBuilder().apply {
-              fraction = stringToFractionParser.parseFractionFromString(answerTextString)
-            }.build()
-            plainAnswer = answerTextString
-            this.writtenTranslationContext =
-              this@FractionInteractionViewModel.writtenTranslationContext
+          val answerTextString = answerText.toString()
+          answer = InteractionObject.newBuilder().apply {
+            fraction = stringToFractionParser.parseFractionFromString(answerTextString)
+          }.build()
+          plainAnswer = answerTextString
+          this.writtenTranslationContext =
+            this@FractionInteractionViewModel.writtenTranslationContext
         }.build()
       }
     } else {
@@ -114,10 +114,10 @@ class FractionInteractionViewModel(
       }
 
       override fun onTextChanged(answer: CharSequence, start: Int, before: Int, count: Int) {
-        if(answer.isNotEmpty()) {
+        if (answer.isNotEmpty()) {
           answerText = answer.toString().trim()
           val isAnswerTextAvailable = answerText.isNotEmpty()
-          if(isAnswerTextAvailable != isAnswerAvailable.get()) {
+          if (isAnswerTextAvailable != isAnswerAvailable.get()) {
             isAnswerAvailable.set(isAnswerTextAvailable)
           }
           checkPendingAnswerError(AnswerErrorCategory.REAL_TIME)

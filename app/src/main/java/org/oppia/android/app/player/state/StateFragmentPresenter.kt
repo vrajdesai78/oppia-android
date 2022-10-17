@@ -1,7 +1,6 @@
 package org.oppia.android.app.player.state
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
 import nl.dionsegijn.konfetti.KonfettiView
 import org.oppia.android.R
 import org.oppia.android.app.fragment.FragmentScope
@@ -43,12 +43,10 @@ import org.oppia.android.util.data.AsyncResult
 import org.oppia.android.util.data.DataProviders.Companion.toLiveData
 import org.oppia.android.util.gcsresource.DefaultResourceBucketName
 import org.oppia.android.util.parser.html.ExplorationHtmlParserEntityType
-import org.oppia.android.util.system.OppiaClock
-import javax.inject.Inject
-import org.oppia.android.app.model.PendingUserAnswer
-import org.oppia.android.domain.state.RetriveUserAnswer
 import org.oppia.android.util.platformparameter.EnableConfigurationChange
 import org.oppia.android.util.platformparameter.PlatformParameterValue
+import org.oppia.android.util.system.OppiaClock
+import org.oppia.android.app.model.PendingUserAnswer
 
 const val STATE_FRAGMENT_PROFILE_ID_ARGUMENT_KEY =
   "StateFragmentPresenter.state_fragment_profile_id"
@@ -160,7 +158,7 @@ class StateFragmentPresenter @Inject constructor(
       )
     }
 
-    if(pendingUserAnswer!=null) {
+    if (pendingUserAnswer != null) {
       viewModel.setPendingAnswer(pendingUserAnswer, recyclerViewAssembler::getPendingAnswerHandler)
     }
     subscribeToCurrentState()

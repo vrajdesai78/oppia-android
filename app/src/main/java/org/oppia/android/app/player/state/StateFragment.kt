@@ -2,13 +2,13 @@ package org.oppia.android.app.player.state
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.oppia.android.app.fragment.FragmentComponentImpl
 import org.oppia.android.app.fragment.InjectableFragment
 import org.oppia.android.app.model.HelpIndex
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.UserAnswer
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerErrorOrAvailabilityCheckReceiver
 import org.oppia.android.app.player.state.answerhandling.InteractionAnswerHandler
@@ -20,14 +20,10 @@ import org.oppia.android.app.player.state.listener.PreviousResponsesHeaderClickL
 import org.oppia.android.app.player.state.listener.ReturnToTopicNavigationButtonListener
 import org.oppia.android.app.player.state.listener.ShowHintAvailabilityListener
 import org.oppia.android.app.player.state.listener.SubmitNavigationButtonListener
-import org.oppia.android.util.extensions.getStringFromBundle
-import javax.inject.Inject
-import org.oppia.android.R
-import org.oppia.android.app.customview.interaction.FractionInputInteractionView
-import org.oppia.android.app.model.PendingUserAnswer
-import org.oppia.android.domain.state.RetriveUserAnswer
 import org.oppia.android.util.extensions.getProto
+import org.oppia.android.util.extensions.getStringFromBundle
 import org.oppia.android.util.extensions.putProto
+import javax.inject.Inject
 
 /** Fragment that represents the current state of an exploration. */
 class StateFragment :
@@ -87,8 +83,9 @@ class StateFragment :
     val explorationId =
       arguments!!.getStringFromBundle(STATE_FRAGMENT_EXPLORATION_ID_ARGUMENT_KEY)!!
     var pendingUserAnswer: PendingUserAnswer? = null
-    if(savedInstanceState!=null) {
-      pendingUserAnswer = savedInstanceState.getProto("Answer", PendingUserAnswer.getDefaultInstance())
+    if (savedInstanceState != null) {
+      pendingUserAnswer = savedInstanceState
+        .getProto("Answer", PendingUserAnswer.getDefaultInstance())
     }
     return stateFragmentPresenter.handleCreateView(
       inflater,

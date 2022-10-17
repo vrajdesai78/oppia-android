@@ -90,10 +90,10 @@ import org.oppia.android.databinding.TextInputInteractionItemBinding
 import org.oppia.android.domain.translation.TranslationController
 import org.oppia.android.util.accessibility.AccessibilityService
 import org.oppia.android.util.parser.html.HtmlParser
-import org.oppia.android.util.threading.BackgroundDispatcher
-import javax.inject.Inject
 import org.oppia.android.util.platformparameter.EnableConfigurationChange
 import org.oppia.android.util.platformparameter.PlatformParameterValue
+import org.oppia.android.util.threading.BackgroundDispatcher
+import javax.inject.Inject
 
 private typealias AudioUiManagerRetriever = () -> AudioUiManager?
 
