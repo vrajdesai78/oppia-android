@@ -68,7 +68,8 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { entityId, hasConversationView, interaction, interactionAnswerReceiver,
-             interactionAnswerErrorReceiver, _, isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
+             interactionAnswerErrorReceiver, _, isSplitView, isConfigurationChangeEnabled,
+             writtenTranslationContext ->
       SelectionInteractionViewModel(
         entityId,
         hasConversationView,

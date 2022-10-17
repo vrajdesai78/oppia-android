@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import javax.inject.Inject
 import nl.dionsegijn.konfetti.KonfettiView
 import org.oppia.android.R
 import org.oppia.android.app.fragment.FragmentScope
@@ -21,6 +20,7 @@ import org.oppia.android.app.model.AnswerOutcome
 import org.oppia.android.app.model.CheckpointState
 import org.oppia.android.app.model.EphemeralState
 import org.oppia.android.app.model.HelpIndex
+import org.oppia.android.app.model.PendingUserAnswer
 import org.oppia.android.app.model.ProfileId
 import org.oppia.android.app.model.State
 import org.oppia.android.app.model.UserAnswer
@@ -46,7 +46,7 @@ import org.oppia.android.util.parser.html.ExplorationHtmlParserEntityType
 import org.oppia.android.util.platformparameter.EnableConfigurationChange
 import org.oppia.android.util.platformparameter.PlatformParameterValue
 import org.oppia.android.util.system.OppiaClock
-import org.oppia.android.app.model.PendingUserAnswer
+import javax.inject.Inject
 
 const val STATE_FRAGMENT_PROFILE_ID_ARGUMENT_KEY =
   "StateFragmentPresenter.state_fragment_profile_id"
@@ -503,5 +503,4 @@ class StateFragmentPresenter @Inject constructor(
   fun handleOnSavedInstance(): PendingUserAnswer {
     return viewModel.getPendingUserAnswer(recyclerViewAssembler::getPendingAnswerHandler)
   }
-
 }

@@ -52,7 +52,8 @@ class InputInteractionViewTestActivity :
       writtenTranslationContext = WrittenTranslationContext.getDefaultInstance(),
       resourceHandler = resourceHandler,
       enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
-        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
+      )
     )
 
   }
@@ -66,7 +67,8 @@ class InputInteractionViewTestActivity :
       writtenTranslationContext = WrittenTranslationContext.getDefaultInstance(),
       translationController = translationController,
       enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
-        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
+      )
     )
 
   }
@@ -86,7 +88,8 @@ class InputInteractionViewTestActivity :
       resourceHandler = resourceHandler,
       translationController = translationController,
       enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
-        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
+      )
     )
 
     ratioExpressionInputInteractionViewModel = RatioExpressionInputInteractionViewModel(
@@ -101,7 +104,8 @@ class InputInteractionViewTestActivity :
       resourceHandler = resourceHandler,
       translationController = translationController,
       enableConfigurationChange = PlatformParameterValue.createDefaultParameter(
-        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE)
+        ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
+      )
     )
 
     binding.numericInputViewModel = numericInputViewModel

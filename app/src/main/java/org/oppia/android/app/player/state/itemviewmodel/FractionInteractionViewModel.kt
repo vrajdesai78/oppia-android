@@ -153,5 +153,4 @@ class FractionInteractionViewModel(
       else -> resourceHandler.getStringInLocale(R.string.fractions_default_hint_text)
     }
   }
-
 }
