@@ -149,7 +149,7 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { entityId, hasConversationView, interaction, _, interactionAnswerErrorReceiver, _,
-             isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
+      isSplitView, isConfigurationChangeEnabled, writtenTranslationContext ->
       DragAndDropSortInteractionViewModel(
         entityId,
         hasConversationView,
@@ -193,7 +193,7 @@ class InteractionViewModelModule {
     translationController: TranslationController
   ): InteractionViewModelFactory {
     return { _, hasConversationView, interaction, _, answerErrorReceiver, _, isSplitView,
-             isConfigurationChangeEnabled, writtenTranslationContext ->
+      isConfigurationChangeEnabled, writtenTranslationContext ->
       RatioExpressionInputInteractionViewModel(
         interaction,
         hasConversationView,
