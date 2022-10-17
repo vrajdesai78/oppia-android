@@ -307,7 +307,7 @@ message UserAnswer {
 // Corresponds to pending user answer used to handle configuration changes
 message PendingUserAnswer {
   // A previous answer the learner submitted
-  UserAnswer userAnswer = 1;
+  UserAnswer user_answer = 1;
   // Error message of previously submitted answer
   string error_message = 2;
 }
