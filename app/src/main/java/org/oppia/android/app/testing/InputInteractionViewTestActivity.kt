@@ -55,7 +55,6 @@ class InputInteractionViewTestActivity :
         ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
       )
     )
-
   }
 
   val textInputViewModel by lazy {
@@ -70,7 +69,6 @@ class InputInteractionViewTestActivity :
         ENABLE_CONFIGURATION_CHANGE_DEFAULT_VALUE
       )
     )
-
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
